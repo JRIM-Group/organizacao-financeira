@@ -5,110 +5,97 @@ import Logo from '../../components/Logo';
 import api from '../../services/api';
 import { Header, Section, Title, Transacao } from './style';
 
-interface ContaParams {
-  conta: string;
-}
-
-const typeContaAllowed = {
-  "10": "CORRENTE",
-  "13": "POUPANÇA",
-  "25": "MEI",
-  "17": "UNIVERSITÁRIO",
+const sections = {
+  "destinationOrganization": "destinationOrganization",
+  "investmentPortfolio": "investmentPortfolio",
+  "variableIncomePortfolio": "variableIncomePortfolio",
 };
 
-interface Pessoa{
-  nome: string;
+const destination = {
+  "retirement": "retirement",
+  "emergency": "emergency",
+  "education": "education",
+  "shortTermGoals": "shortTermGoals",
+  "mediumTermGoals": "mediumTermGoals",
+  "longTermGoals": "longTermGoals",
+  "needs": "needs",
+  "fixedIncome": "fixedIncome",
+  "variableIncome": "variableIncome",
+  "scrip": "scrip",
+  "fiis": "fiis",
+  "stocks": "stocks",
+  "reit": "reit",
+  "ownBusiness": "ownBusiness",
+  "immobilized": "immobilized",
+  "cryptocurrencies": "cryptocurrencies",
+  "metals": "metals",
+  "rebalancingReserve": "rebalancingReserve",
+  "detour": "detour",
+};
+
+
+interface IDestinationOrganization {
+  retirement: number;
+  emergency: number;
+  education: number;
+  shortTermGoals: number;
+  mediumTermGoals: number;
+  longTermGoals: number;
+  needs: number;
+  recreation: number;
+  decision: string;
 }
 
-interface Conta {
-  idConta: string;
-  saldo: string;
-  limiteSaqueDiario: string;
-  tipoConta:  keyof typeof typeContaAllowed;
-  flagAtivo: boolean;
-  pessoa: Pessoa;
+interface IInvestmentPortfolio {
+  fixedIncome: number;
+  variableIncome: number;
+  detour: number;
+  decision: string;
 }
 
-interface Transacao {
-  id: number;
-  valor: string;
-  dataTransacao: string;
+interface IVariableIncomePortfolio {
+  scrip: number;
+  fiis: number;
+  stocks: number;
+  reit: number;
+  ownBusiness: number;
+  immobilized: number;
+  cryptocurrencies: number;
+  metals: number;
+  rebalancingReserve: number;
+  detour: number;
+  decision: string;
 }
 
-interface FilterDate {
-  initial: string;
-  final: string;
+interface IPercentagePercentage {
+  destinationOrganization: IDestinationOrganization;
+  investmentPortfolio: IInvestmentPortfolio;
+  variableIncomePortfolio: IVariableIncomePortfolio;
 }
 
 const Conta: React.FC = () => {
-  const { params } = useRouteMatch<ContaParams>();
-  const [filterDate, setFilterDate] = useState<FilterDate>({ initial: "", final: ""});
-  const [conta, setConta] = useState<Conta | null>(null);
-  const [transacoes, setTransacoes] = useState<Transacao[]>([]);
+  const [percentage, setPercentage] = useState<IPercentagePercentage>({} as IPercentagePercentage)
 
   useEffect(() => {
-    api.get<Conta>(`/conta/${params.conta}`).then((response) => {
-      console.log(response.data);
-      setConta(response.data);
+
+      // [sections.destinationOrganization][destination.retirement]
+      setPercentage({
+        ...percentage,
+        destinationOrganization: {
+          retirement: 10,
+        }
+      })
+      console.log(percentage)
+
+  }, []);
 
 
-    api.get<Transacao[]>(`/conta/${params.conta}/transacoes`).then((response) => {
-      console.log(response.data);
-      setTransacoes(response.data);
-    });
-
-
-    }).catch(() => {
-      setConta(null);
-    });
-  }, [params.conta]);
-
-  const handleStatus = useCallback((currentStatus: boolean) => {
-    if (currentStatus){
-      api.patch(`/conta/${params.conta}/desativar`).then((response) => {
-        setConta((oldState) => {
-          if (!oldState){
-            return null;
-          }
-          return {...oldState, flagAtivo: false};
-        });
-      });
-    }else{
-      api.patch(`/conta/${params.conta}/ativar`).then((response) => {
-        setConta((oldState) => {
-          if (!oldState){
-            return null;
-          }
-          return {...oldState, flagAtivo: true};
-        });
-      });
-    }
-  },[]);
-
-  const handleFilter = useCallback((event: FormEvent<HTMLFormElement>) => {
+  const handlePort = useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const param1 = filterDate.initial.length !== 0 ? `dateInitial=${filterDate.initial}`: "";
-    const param2 = filterDate.final.length !== 0 ? `dateFinal=${filterDate.final}`: "";
+    console.log(event);
 
-
-    let query = '';
-    if(param1.length !== 0 && param2.length !== 0){
-      query = `?${param1}&${param2}`;
-    }else if(param1.length === 0 && param2.length !== 0){
-      query = `?${param2}`;
-    }else if(param1.length !== 0 && param2.length === 0){
-      query = `?${param1}`;
-    }else{
-      query = ``;
-    }
-
-    api.get<Transacao[]>(`/conta/${params.conta}/transacoes${query}`).then((response) => {
-      console.log(response.data);
-      setTransacoes(response.data);
-    });
-
-  },[params.conta, filterDate]);
+  },[]);
 
   return (
     <>
@@ -130,7 +117,16 @@ const Conta: React.FC = () => {
           <p>100%</p>
         </header>
         <div>
-          <div><input value="10,00" type="text"/><label htmlFor="">Aposentadoria (Património)</label></div>
+          <div>
+            <input
+              id={destination.retirement}
+              className={sections.destinationOrganization}
+              value=""
+              placeholder="10,00"
+              onChange={(e) => setPercentage({...percentage})}
+              type="text"
+            />
+            <label htmlFor="">Aposentadoria (Património)</label></div>
           <div><input value="5" type="text"/><label htmlFor="">Reserva de Emergência</label></div>
           <div><input value="5" type="text"/><label htmlFor="">Educação</label></div>
           <div><input value="5" type="text"/><label htmlFor="">Metas de Curto Prazo</label></div>
