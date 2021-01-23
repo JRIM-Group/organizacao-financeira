@@ -32,6 +32,10 @@ export const Section = styled.section`
   font-size: 20px;
   line-height: 30px;
 
+  &+&{
+    margin-top: 24px;
+  }
+
   header {
     display: flex;
     justify-content: space-between;
@@ -44,7 +48,7 @@ export const Section = styled.section`
     /* background: #F6E645; */
   }
 
-  main {
+  > div {
     /* margin: 8px 0; */
     /* border: 2px solid #3a3a3a; */
     border-radius: 8px;
@@ -81,9 +85,6 @@ export const Section = styled.section`
 
     }
 
-  }
-
-  footer{
     header {
       border-top: 2px solid #3a3a3a;
     }

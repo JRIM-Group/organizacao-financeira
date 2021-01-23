@@ -129,7 +129,7 @@ const Conta: React.FC = () => {
           </p>
           <p>100%</p>
         </header>
-        <main>
+        <div>
           <div><input value="10,00" type="text"/><label htmlFor="">Aposentadoria (Património)</label></div>
           <div><input value="5" type="text"/><label htmlFor="">Reserva de Emergência</label></div>
           <div><input value="5" type="text"/><label htmlFor="">Educação</label></div>
@@ -138,11 +138,61 @@ const Conta: React.FC = () => {
           <div><input value="10" type="text"/><label htmlFor="">Metas de Longo Prazo</label></div>
           <div><input value="50" type="text"/><label htmlFor="">Gastos e necessidades</label></div>
           <div><input value="10" type="text"/><label htmlFor="">Gastos com o que quiser</label></div>
-        </main>
-        <footer>
+        </div>
+        <div>
           <header>Decido pelas opções acima porque:</header>
           <textarea>Teste</textarea>
-        </footer>
+        </div>
+      </Section>
+
+      <Section>
+        <header>
+          <p>
+            Minha carteira de investimentos deve estar balanceada da seguinte forma entre as classes de ativos:
+          </p>
+          <p>100%</p>
+        </header>
+        <div>
+          <div><input value="30,00" type="text"/><label htmlFor="">Renda Fixa</label></div>
+          <div><input value="70,00" type="text"/><label htmlFor="">Renda Variável</label></div>
+        </div>
+        <div>
+          <header>Aceito um desvio padrão para rebalanceamento de:</header>
+          <div><input value="8" type="text"/><label htmlFor=""></label></div>
+        </div>
+        <div>
+          <header>Decido pelas opções acima porque:</header>
+          <textarea>Teste</textarea>
+        </div>
+      </Section>
+
+      <Section>
+        <header>
+          <p>
+          Minha carteira de Renda Variável (Previdenciaria) deve estar balanceada da seguinte forma:
+          </p>
+          <p>100%</p>
+        </header>
+        <div>
+          <div><input value="25,00" type="text"/><label htmlFor="">Ações</label></div>
+          <div><input value="30,00" type="text"/><label htmlFor="">FIIs</label></div>
+          <div><input value="00,00" type="text"/><label htmlFor="">Fundos de Investimento em Ações</label></div>
+          <div><input value="5,00" type="text"/><label htmlFor="">Stocks</label></div>
+          <div><input value="00,00" type="text"/><label htmlFor="">REIT</label></div>
+          <div><input value="20,00" type="text"/><label htmlFor="">Negócios Próprios</label></div>
+          <div><input value="00,00" type="text"/><label htmlFor="">Imobilizado</label></div>
+          <div><input value="5,00" type="text"/><label htmlFor="">Reserva em Criptomoedas</label></div>
+          <div><input value="5,00" type="text"/><label htmlFor="">Reserva em Metais</label></div>
+          <div><input value="10,00" type="text"/><label htmlFor="">Reserva de Renda Fixa de Liquidez</label></div>
+        </div>
+        <div>
+          <header>Aceito um desvio padrão para rebalanceamento de:</header>
+          <div><input value="2" type="text"/><label htmlFor=""></label></div>
+        </div>
+        <div>
+          <header>Decido pelas opções acima porque:</header>
+          <textarea>Teste</textarea>
+        </div>
       </Section>
 
         {
