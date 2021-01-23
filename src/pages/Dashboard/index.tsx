@@ -33,7 +33,7 @@ const Dashboard: React.FC = () => {
   return (
     <>
       <Logo/>
-      <Title>Contas <br/> Meu Banco</Title>
+      <Title>Meu <br/> Dashboard</Title>
 
       <Contas>
         {contas.map((conta) => (

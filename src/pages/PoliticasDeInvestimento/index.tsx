@@ -3,7 +3,7 @@ import { FiChevronLeft } from 'react-icons/fi';
 import { Link, useRouteMatch } from 'react-router-dom';
 import Logo from '../../components/Logo';
 import api from '../../services/api';
-import { ContaInfo, Header, Transacao, Form } from './style';
+import { Header, Section, Title, Transacao } from './style';
 
 interface ContaParams {
   conta: string;
@@ -120,8 +120,33 @@ const Conta: React.FC = () => {
         </Link>
       </Header>
 
-      {conta && (
-        <ContaInfo status={conta.flagAtivo}>
+      <Title>Políticas de Investimentos</Title>
+
+      <Section>
+        <header>
+          <p>
+          De tudo que eu recebo, organizo da seguinte forma:
+          </p>
+          <p>100%</p>
+        </header>
+        <main>
+          <div><input value="10,00" type="text"/><label htmlFor="">Aposentadoria (Património)</label></div>
+          <div><input value="5" type="text"/><label htmlFor="">Reserva de Emergência</label></div>
+          <div><input value="5" type="text"/><label htmlFor="">Educação</label></div>
+          <div><input value="5" type="text"/><label htmlFor="">Metas de Curto Prazo</label></div>
+          <div><input value="5" type="text"/><label htmlFor="">Metas de Médio Prazo</label></div>
+          <div><input value="10" type="text"/><label htmlFor="">Metas de Longo Prazo</label></div>
+          <div><input value="50" type="text"/><label htmlFor="">Gastos e necessidades</label></div>
+          <div><input value="10" type="text"/><label htmlFor="">Gastos com o que quiser</label></div>
+        </main>
+        <footer>
+          <header>Decido pelas opções acima porque:</header>
+          <textarea>Teste</textarea>
+        </footer>
+      </Section>
+
+        {
+        /* <ContaInfo status={conta.flagAtivo}>
           <header>
             <img
               src="https://images.pexels.com/photos/4386433/pexels-photo-4386433.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
@@ -153,10 +178,10 @@ const Conta: React.FC = () => {
               )}
             </li>
           </ul>
-        </ContaInfo>
-      )}
+        </ContaInfo>*/
+      }
 
-      <Form onSubmit={handleFilter}>
+      {/* <Form onSubmit={handleFilter}>
         <h2>Extrato</h2>
         <div>
           <div>
@@ -181,9 +206,9 @@ const Conta: React.FC = () => {
           </div>
           <button type="submit">Filtrar</button>
           </div>
-      </Form>
+      </Form> */}
 
-      {transacoes.map((transacao, i) => (
+      {/* {transacoes.map((transacao, i) => (
         <Transacao key={i} entrada={Number(transacao.valor) > 0}>
           <strong>{Number(transacao.valor).toLocaleString("pt-BR", { minimumFractionDigits: 2 , style: 'currency', currency: 'BRL' })}</strong>
           <p>{transacao.dataTransacao}</p>
@@ -191,7 +216,7 @@ const Conta: React.FC = () => {
       ))}
       {transacoes.length === 0 && (
          <strong>Nenhuma movimentação neste período</strong>
-      )}
+      )} */}
     </>
   );
 };

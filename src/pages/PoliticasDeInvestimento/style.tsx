@@ -9,6 +9,102 @@ interface ContaInfoProps{
   status?: string | boolean;
 }
 
+export const Title = styled.h1`
+  font-size: 48px;
+  color: #3a3a3a;
+  /* max-width: 450px; */
+  line-height: 56px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+`;
+
+export const Section = styled.section`
+  background: #fff;
+  border-radius: 8px;
+  width: 100%;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-decoration: none;
+
+  font-family: 'Roboto';
+  font-size: 20px;
+  line-height: 30px;
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 32px;
+    padding: 8px 0;
+    border-bottom: 2px solid #3a3a3a;
+
+    /* background: #F6E645; */
+  }
+
+  main {
+    /* margin: 8px 0; */
+    /* border: 2px solid #3a3a3a; */
+    border-radius: 8px;
+
+    div {
+      display: flex;
+      background-color: #d6d6d6;
+      /* margin: 4px 0; */
+      /* padding: 4px 0; */
+      /* border: 0.5px solid #3a3a3a; */
+      /* border-radius: 4px; */
+
+      input{
+        border: none;
+        background: transparent;
+        margin: 0 8px;
+        font-size: 20px;
+        font-family: 'Roboto';
+        max-width: 75px;
+        border-right: 4px solid #fff;
+        display: flex;
+
+      }
+
+      &:nth-child(even){
+        background: #5e5e5e;
+        color: #fff;
+
+        input{
+        color: #fff;
+        }
+      }
+
+
+    }
+
+  }
+
+  footer{
+    header {
+      border-top: 2px solid #3a3a3a;
+    }
+
+    textarea {
+      /* margin-top: 12px; */
+      background-color: #d6d6d6;
+      border: 2px solid #3a3a3a;
+      border-top: 0;
+      border-radius: 0 0 8px 8px;
+      width: 100%;
+      min-height: 100px;
+      font-size: 20px;
+      font-family: 'Roboto';
+      padding: 4px;
+
+    }
+  }
+
+`;
+
 export const Header = styled.header`
   display: flex;
   align-items: center;
