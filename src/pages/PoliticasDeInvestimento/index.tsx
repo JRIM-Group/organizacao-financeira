@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FiChevronLeft } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import Logo from '../../components/Logo';
@@ -79,6 +79,7 @@ interface ITotal {
 }
 
 const Conta: React.FC = () => {
+
   const [percentage, setPercentage] = useState<IPercentagePercentage>({
       destinationOrganization: {
         retirement: 0,
@@ -136,7 +137,13 @@ const Conta: React.FC = () => {
                 }
 
                 var oldValue = percentage.destinationOrganization.retirement;
-
+                var total = Object.values(percentage.destinationOrganization)
+                  .filter(a => typeof a === 'number')
+                  .reduce((a, b) => a + b, 0) + value - oldValue;
+                setTotais({
+                  ...totais,
+                  destinationOrganization:total,
+                });
 
                 setPercentage({
                   ...percentage,
@@ -144,12 +151,6 @@ const Conta: React.FC = () => {
                     ...percentage.destinationOrganization,
                     retirement: value,
                   }
-                });
-                setTotais({
-                  ...totais,
-                  destinationOrganization: Object
-                    .values(percentage.destinationOrganization)
-                    .reduce((a, b) => a + b, 0) + value - oldValue
                 });
               }}
               type="text"
@@ -168,6 +169,21 @@ const Conta: React.FC = () => {
                }
 
               const oldValue = percentage.destinationOrganization.emergency;
+              const total = Object.values(percentage.destinationOrganization)
+                  .filter(a => typeof a === 'number')
+                  .reduce((a, b) => a + b, 0) + value - oldValue;
+              setTotais({
+                ...totais,
+                destinationOrganization:total,
+              });
+
+              setPercentage({
+                ...percentage,
+                destinationOrganization: {
+                  ...percentage.destinationOrganization,
+                  retirement: value,
+                }
+              });
 
                setPercentage({
                  ...percentage,
@@ -175,13 +191,7 @@ const Conta: React.FC = () => {
                    ...percentage.destinationOrganization,
                    emergency: value,
                  }
-               })
-               setTotais({
-                 ...totais,
-                 destinationOrganization: Object
-                   .values(percentage.destinationOrganization)
-                   .reduce((a, b) => a + b, 0) + value - oldValue
-               })
+               });
              }}
              type="text"/>
             <label htmlFor="">Reserva de Emergência</label></div>
@@ -198,6 +208,23 @@ const Conta: React.FC = () => {
                }
 
                var oldValue = percentage.destinationOrganization.education;
+               const total = Object.values(percentage.destinationOrganization)
+                  .filter(a => typeof a === 'number')
+                  .reduce((a, b) => a + b, 0) + value - oldValue;
+
+              setTotais({
+                ...totais,
+                destinationOrganization:total,
+              });
+
+              setPercentage({
+                ...percentage,
+                destinationOrganization: {
+                  ...percentage.destinationOrganization,
+                  retirement: value,
+                }
+              });
+
 
                setPercentage({
                  ...percentage,
@@ -205,13 +232,7 @@ const Conta: React.FC = () => {
                    ...percentage.destinationOrganization,
                    education: value,
                  }
-               })
-               setTotais({
-                 ...totais,
-                 destinationOrganization: Object
-                   .values(percentage.destinationOrganization)
-                   .reduce((a, b) => a + b, 0) + value - oldValue
-               })
+               });
              }}
              type="text"/>
             <label htmlFor="">Educação</label></div>
@@ -228,6 +249,23 @@ const Conta: React.FC = () => {
                }
 
                var oldValue = percentage.destinationOrganization.shortTermGoals;
+               const total = Object.values(percentage.destinationOrganization)
+                  .filter(a => typeof a === 'number')
+                  .reduce((a, b) => a + b, 0) + value - oldValue;
+
+              setTotais({
+                ...totais,
+                destinationOrganization:total,
+              });
+
+              setPercentage({
+                ...percentage,
+                destinationOrganization: {
+                  ...percentage.destinationOrganization,
+                  retirement: value,
+                }
+              });
+
 
                setPercentage({
                  ...percentage,
@@ -235,12 +273,6 @@ const Conta: React.FC = () => {
                    ...percentage.destinationOrganization,
                    shortTermGoals: value,
                  }
-               })
-               setTotais({
-                 ...totais,
-                 destinationOrganization: Object
-                   .values(percentage.destinationOrganization)
-                   .reduce((a, b) => a + b, 0) + value - oldValue
                })
              }}
              type="text"/>
@@ -258,6 +290,24 @@ const Conta: React.FC = () => {
                }
 
                var oldValue = percentage.destinationOrganization.mediumTermGoals;
+               const total = Object.values(percentage.destinationOrganization)
+                  .filter(a => typeof a === 'number')
+                  .reduce((a, b) => a + b, 0) + value - oldValue;
+
+              setTotais({
+                ...totais,
+                destinationOrganization:total,
+              });
+
+
+              setPercentage({
+                ...percentage,
+                destinationOrganization: {
+                  ...percentage.destinationOrganization,
+                  retirement: value,
+                }
+              });
+
 
                setPercentage({
                  ...percentage,
@@ -265,13 +315,7 @@ const Conta: React.FC = () => {
                    ...percentage.destinationOrganization,
                    mediumTermGoals: value,
                  }
-               })
-               setTotais({
-                 ...totais,
-                 destinationOrganization: Object
-                   .values(percentage.destinationOrganization)
-                   .reduce((a, b) => a + b, 0) + value - oldValue
-               })
+               });
              }}
              type="text"/>
             <label htmlFor="">Metas de Médio Prazo</label></div>
@@ -288,6 +332,24 @@ const Conta: React.FC = () => {
                }
 
                var oldValue = percentage.destinationOrganization.longTermGoals;
+               const total = Object.values(percentage.destinationOrganization)
+                  .filter(a => typeof a === 'number')
+                  .reduce((a, b) => a + b, 0) + value - oldValue;
+
+                  setTotais({
+                    ...totais,
+                    destinationOrganization:total,
+                  });
+
+
+              setPercentage({
+                ...percentage,
+                destinationOrganization: {
+                  ...percentage.destinationOrganization,
+                  retirement: value,
+                }
+              });
+
 
                setPercentage({
                  ...percentage,
@@ -295,13 +357,7 @@ const Conta: React.FC = () => {
                    ...percentage.destinationOrganization,
                    longTermGoals: value,
                  }
-               })
-               setTotais({
-                 ...totais,
-                 destinationOrganization: Object
-                   .values(percentage.destinationOrganization)
-                   .reduce((a, b) => a + b, 0) + value - oldValue
-               })
+               });
              }}
              type="text"/>
             <label htmlFor="">Metas de Longo Prazo</label></div>
@@ -318,6 +374,24 @@ const Conta: React.FC = () => {
                }
 
                var oldValue = percentage.destinationOrganization.needs;
+               const total = Object.values(percentage.destinationOrganization)
+                  .filter(a => typeof a === 'number')
+                  .reduce((a, b) => a + b, 0) + value - oldValue;
+
+                  setTotais({
+                    ...totais,
+                    destinationOrganization:total,
+                  });
+
+
+              setPercentage({
+                ...percentage,
+                destinationOrganization: {
+                  ...percentage.destinationOrganization,
+                  retirement: value,
+                }
+              });
+
 
                setPercentage({
                  ...percentage,
@@ -325,13 +399,7 @@ const Conta: React.FC = () => {
                    ...percentage.destinationOrganization,
                    needs: value,
                  }
-               })
-               setTotais({
-                 ...totais,
-                 destinationOrganization: Object
-                   .values(percentage.destinationOrganization)
-                   .reduce((a, b) => a + b, 0) + value - oldValue
-               })
+               });
              }}
              type="text"/>
             <label htmlFor="">Gastos e necessidades</label></div>
@@ -348,6 +416,24 @@ const Conta: React.FC = () => {
                }
 
                var oldValue = percentage.destinationOrganization.recreation;
+               const total = Object.values(percentage.destinationOrganization)
+                  .filter(a => typeof a === 'number')
+                  .reduce((a, b) => a + b, 0) + value - oldValue;
+
+                  setTotais({
+                    ...totais,
+                    destinationOrganization:total,
+                  });
+
+
+              setPercentage({
+                ...percentage,
+                destinationOrganization: {
+                  ...percentage.destinationOrganization,
+                  retirement: value,
+                }
+              });
+
 
                setPercentage({
                  ...percentage,
@@ -355,13 +441,7 @@ const Conta: React.FC = () => {
                    ...percentage.destinationOrganization,
                    recreation: value,
                  }
-               })
-               setTotais({
-                 ...totais,
-                 destinationOrganization: Object
-                   .values(percentage.destinationOrganization)
-                   .reduce((a, b) => a + b, 0) + value - oldValue
-               })
+               });
              }}
              type="text"/>
             <label htmlFor="">Gastos com o que quiser</label></div>
