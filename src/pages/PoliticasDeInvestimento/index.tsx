@@ -1,9 +1,8 @@
-import React, { FormEvent, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FiChevronLeft } from 'react-icons/fi';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Logo from '../../components/Logo';
-import api from '../../services/api';
-import { Header, Section, Title, Transacao } from './style';
+import { Header, Section, Title } from './style';
 
 const sections = {
   "destinationOrganization": "destinationOrganization",
@@ -73,29 +72,36 @@ interface IPercentagePercentage {
   variableIncomePortfolio: IVariableIncomePortfolio;
 }
 
+interface ITotal {
+  destinationOrganization: number;
+  investmentPortfolio: number;
+  variableIncomePortfolio: number;
+}
+
 const Conta: React.FC = () => {
-  const [percentage, setPercentage] = useState<IPercentagePercentage>({} as IPercentagePercentage)
+  const [percentage, setPercentage] = useState<IPercentagePercentage>({
+      destinationOrganization: {
+        retirement: 0,
+        emergency: 0,
+        education: 0,
+        shortTermGoals: 0,
+        mediumTermGoals: 0,
+        longTermGoals: 0,
+        needs: 0,
+        recreation: 0,
+        decision: '',
+      }
+    } as unknown as IPercentagePercentage)
+  const [totais, setTotais] = useState<ITotal>({
+    destinationOrganization: 0,
+    investmentPortfolio: 0,
+    variableIncomePortfolio:0
+  } as ITotal)
 
   useEffect(() => {
 
-      // [sections.destinationOrganization][destination.retirement]
-      setPercentage({
-        ...percentage,
-        destinationOrganization: {
-          retirement: 10,
-        }
-      })
-      console.log(percentage)
 
   }, []);
-
-
-  const handlePort = useCallback((event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    console.log(event);
-
-  },[]);
 
   return (
     <>
@@ -114,30 +120,267 @@ const Conta: React.FC = () => {
           <p>
           De tudo que eu recebo, organizo da seguinte forma:
           </p>
-          <p>100%</p>
+          <p>{`${totais.destinationOrganization}%`}</p>
         </header>
         <div>
           <div>
             <input
-              id={destination.retirement}
-              className={sections.destinationOrganization}
-              value=""
-              placeholder="10,00"
-              onChange={(e) => setPercentage({...percentage})}
+              value={percentage.destinationOrganization.retirement}
+              placeholder="10,00%"
+              onChange={(e) => {
+                var value: number = parseFloat(e.target.value);
+                if (parseFloat(e.target.value) <= 0){
+                  value = value  * -1;
+                }else if (isNaN(value)){
+                  value = 0;
+                }
+
+                var oldValue = percentage.destinationOrganization.retirement;
+
+
+                setPercentage({
+                  ...percentage,
+                  destinationOrganization: {
+                    ...percentage.destinationOrganization,
+                    retirement: value,
+                  }
+                });
+                setTotais({
+                  ...totais,
+                  destinationOrganization: Object
+                    .values(percentage.destinationOrganization)
+                    .reduce((a, b) => a + b, 0) + value - oldValue
+                });
+              }}
               type="text"
             />
             <label htmlFor="">Aposentadoria (Património)</label></div>
-          <div><input value="5" type="text"/><label htmlFor="">Reserva de Emergência</label></div>
-          <div><input value="5" type="text"/><label htmlFor="">Educação</label></div>
-          <div><input value="5" type="text"/><label htmlFor="">Metas de Curto Prazo</label></div>
-          <div><input value="5" type="text"/><label htmlFor="">Metas de Médio Prazo</label></div>
-          <div><input value="10" type="text"/><label htmlFor="">Metas de Longo Prazo</label></div>
-          <div><input value="50" type="text"/><label htmlFor="">Gastos e necessidades</label></div>
-          <div><input value="10" type="text"/><label htmlFor="">Gastos com o que quiser</label></div>
+          <div>
+            <input
+             value={percentage.destinationOrganization.emergency}
+             placeholder="10,00%"
+             onChange={(e) => {
+               var value: number = parseFloat(e.target.value);
+               if (parseFloat(e.target.value) <= 0){
+                 value = value  * -1;
+               }else if (isNaN(value)){
+                 value = 0;
+               }
+
+              const oldValue = percentage.destinationOrganization.emergency;
+
+               setPercentage({
+                 ...percentage,
+                 destinationOrganization: {
+                   ...percentage.destinationOrganization,
+                   emergency: value,
+                 }
+               })
+               setTotais({
+                 ...totais,
+                 destinationOrganization: Object
+                   .values(percentage.destinationOrganization)
+                   .reduce((a, b) => a + b, 0) + value - oldValue
+               })
+             }}
+             type="text"/>
+            <label htmlFor="">Reserva de Emergência</label></div>
+          <div>
+            <input
+             value={percentage.destinationOrganization.education}
+             placeholder="10,00%"
+             onChange={(e) => {
+               var value: number = parseFloat(e.target.value);
+               if (parseFloat(e.target.value) <= 0){
+                 value = value  * -1;
+               }else if (isNaN(value)){
+                 value = 0;
+               }
+
+               var oldValue = percentage.destinationOrganization.education;
+
+               setPercentage({
+                 ...percentage,
+                 destinationOrganization: {
+                   ...percentage.destinationOrganization,
+                   education: value,
+                 }
+               })
+               setTotais({
+                 ...totais,
+                 destinationOrganization: Object
+                   .values(percentage.destinationOrganization)
+                   .reduce((a, b) => a + b, 0) + value - oldValue
+               })
+             }}
+             type="text"/>
+            <label htmlFor="">Educação</label></div>
+          <div>
+            <input
+             value={percentage.destinationOrganization.shortTermGoals}
+             placeholder="10,00%"
+             onChange={(e) => {
+               var value: number = parseFloat(e.target.value);
+               if (parseFloat(e.target.value) <= 0){
+                 value = value  * -1;
+               }else if (isNaN(value)){
+                 value = 0;
+               }
+
+               var oldValue = percentage.destinationOrganization.shortTermGoals;
+
+               setPercentage({
+                 ...percentage,
+                 destinationOrganization: {
+                   ...percentage.destinationOrganization,
+                   shortTermGoals: value,
+                 }
+               })
+               setTotais({
+                 ...totais,
+                 destinationOrganization: Object
+                   .values(percentage.destinationOrganization)
+                   .reduce((a, b) => a + b, 0) + value - oldValue
+               })
+             }}
+             type="text"/>
+            <label htmlFor="">Metas de Curto Prazo</label></div>
+          <div>
+            <input
+             value={percentage.destinationOrganization.mediumTermGoals}
+             placeholder="10,00%"
+             onChange={(e) => {
+               var value: number = parseFloat(e.target.value);
+               if (parseFloat(e.target.value) <= 0){
+                 value = value  * -1;
+               }else if (isNaN(value)){
+                 value = 0;
+               }
+
+               var oldValue = percentage.destinationOrganization.mediumTermGoals;
+
+               setPercentage({
+                 ...percentage,
+                 destinationOrganization: {
+                   ...percentage.destinationOrganization,
+                   mediumTermGoals: value,
+                 }
+               })
+               setTotais({
+                 ...totais,
+                 destinationOrganization: Object
+                   .values(percentage.destinationOrganization)
+                   .reduce((a, b) => a + b, 0) + value - oldValue
+               })
+             }}
+             type="text"/>
+            <label htmlFor="">Metas de Médio Prazo</label></div>
+          <div>
+            <input
+             value={percentage.destinationOrganization.longTermGoals}
+             placeholder="10,00%"
+             onChange={(e) => {
+               var value: number = parseFloat(e.target.value);
+               if (parseFloat(e.target.value) <= 0){
+                 value = value  * -1;
+               }else if (isNaN(value)){
+                 value = 0;
+               }
+
+               var oldValue = percentage.destinationOrganization.longTermGoals;
+
+               setPercentage({
+                 ...percentage,
+                 destinationOrganization: {
+                   ...percentage.destinationOrganization,
+                   longTermGoals: value,
+                 }
+               })
+               setTotais({
+                 ...totais,
+                 destinationOrganization: Object
+                   .values(percentage.destinationOrganization)
+                   .reduce((a, b) => a + b, 0) + value - oldValue
+               })
+             }}
+             type="text"/>
+            <label htmlFor="">Metas de Longo Prazo</label></div>
+          <div>
+            <input
+             value={percentage.destinationOrganization.needs}
+             placeholder="10,00%"
+             onChange={(e) => {
+               var value: number = parseFloat(e.target.value);
+               if (parseFloat(e.target.value) <= 0){
+                 value = value  * -1;
+               }else if (isNaN(value)){
+                 value = 0;
+               }
+
+               var oldValue = percentage.destinationOrganization.needs;
+
+               setPercentage({
+                 ...percentage,
+                 destinationOrganization: {
+                   ...percentage.destinationOrganization,
+                   needs: value,
+                 }
+               })
+               setTotais({
+                 ...totais,
+                 destinationOrganization: Object
+                   .values(percentage.destinationOrganization)
+                   .reduce((a, b) => a + b, 0) + value - oldValue
+               })
+             }}
+             type="text"/>
+            <label htmlFor="">Gastos e necessidades</label></div>
+          <div>
+            <input
+             value={percentage.destinationOrganization.recreation}
+             placeholder="10,00%"
+             onChange={(e) => {
+               var value: number = parseFloat(e.target.value);
+               if (parseFloat(e.target.value) <= 0){
+                 value = value  * -1;
+               }else if (isNaN(value)){
+                 value = 0;
+               }
+
+               var oldValue = percentage.destinationOrganization.recreation;
+
+               setPercentage({
+                 ...percentage,
+                 destinationOrganization: {
+                   ...percentage.destinationOrganization,
+                   recreation: value,
+                 }
+               })
+               setTotais({
+                 ...totais,
+                 destinationOrganization: Object
+                   .values(percentage.destinationOrganization)
+                   .reduce((a, b) => a + b, 0) + value - oldValue
+               })
+             }}
+             type="text"/>
+            <label htmlFor="">Gastos com o que quiser</label></div>
         </div>
         <div>
           <header>Decido pelas opções acima porque:</header>
-          <textarea>Teste</textarea>
+          <textarea
+          value={percentage.destinationOrganization.decision}
+          placeholder="Estou definindo esse valores por..."
+          onChange={(e) => {
+            setPercentage({
+              ...percentage,
+              destinationOrganization: {
+                ...percentage.destinationOrganization,
+                decision: e.target.value,
+              }
+            })
+          }}
+          ></textarea>
         </div>
       </Section>
 
