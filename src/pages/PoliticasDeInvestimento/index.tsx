@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FiChevronLeft } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import Logo from '../../components/Logo';
@@ -34,15 +34,15 @@ const destination = {
 
 
 interface IDestinationOrganization {
-  retirement: number;
-  emergency: number;
-  education: number;
-  shortTermGoals: number;
-  mediumTermGoals: number;
-  longTermGoals: number;
-  needs: number;
-  recreation: number;
-  decision: string;
+  retirement?: number;
+  emergency?: number;
+  education?: number;
+  shortTermGoals?: number;
+  mediumTermGoals?: number;
+  longTermGoals?: number;
+  needs?: number;
+  recreation?: number;
+  decision?: string;
 }
 
 interface IInvestmentPortfolio {
@@ -78,21 +78,28 @@ interface ITotal {
   variableIncomePortfolio: number;
 }
 
+interface IHandleTotal {
+  section: string;
+  value: number;
+  oldValue: number;
+}
+
 const Conta: React.FC = () => {
 
-  const [percentage, setPercentage] = useState<IPercentagePercentage>({
-      destinationOrganization: {
-        retirement: 0,
-        emergency: 0,
-        education: 0,
-        shortTermGoals: 0,
-        mediumTermGoals: 0,
-        longTermGoals: 0,
-        needs: 0,
-        recreation: 0,
-        decision: '',
+  const [percentage, setPercentage] = useState<IPercentagePercentage>(() => {
+      const storagedPlanning = localStorage.getItem(
+        '@MyPlanning:percentage',
+      );
+
+      if (storagedPlanning) {
+        return JSON.parse(storagedPlanning);
       }
-    } as unknown as IPercentagePercentage)
+      return {
+        destinationOrganization: {} as IDestinationOrganization,
+        investmentPortfolio: {},
+        variableIncomePortfolio: {},
+      } as IPercentagePercentage;
+  })
   const [totais, setTotais] = useState<ITotal>({
     destinationOrganization: 0,
     investmentPortfolio: 0,
@@ -100,9 +107,103 @@ const Conta: React.FC = () => {
   } as ITotal)
 
   useEffect(() => {
+    localStorage.setItem(
+      '@MyPlanning:percentage',
+      JSON.stringify(percentage),
+    );
+  }, [percentage]);
 
+  useEffect(() => {
+    const storagedPlanning = localStorage.getItem(
+      '@MyPlanning:percentage',
+    );
 
+    if (storagedPlanning) {
+      const p = JSON.parse(storagedPlanning);
+
+      if(p.destinationOrganization){
+
+        const arrayPercentage: (number | undefined)[]= Object.values(p.destinationOrganization)
+          .map(a => {
+            if(typeof a === 'number'){
+              return a;
+            }
+          });
+
+        const total = arrayPercentage.reduce((a, b) => {
+          console.log(`a:${a} b${b}`)
+          if(a && b) {
+            return a + b;
+          }else if (a){
+            return a;
+          }else if(b){
+            return b;
+          }
+        }, 0);
+        console.log(total);
+
+        setTotais((oldState) => ({
+            ...oldState,
+            destinationOrganization: total || 0
+        }));
+      }
+      if(p.investmentPortfolio){
+        // const total = Object.values(p.investmentPortfolio)
+        //   .filter(a => typeof a === 'number')
+        //   .reduce((a, b) => a + b, 0);
+
+        //   setTotais((oldState) => ({...oldState, investmentPortfolio: total}));
+      }
+      if(p.variableIncomePortfolio){
+        // const total = Object.values(p.variableIncomePortfolio)
+        //   .filter(a => typeof a === 'number')
+        //   .reduce((a, b) => a + b, 0);
+
+        //   setTotais((oldState) => ({...oldState, variableIncomePortfolio: total}));
+      }
+    }
   }, []);
+
+  const handleTotal = useCallback(({section, value, oldValue}: IHandleTotal) => {
+
+    if(section === 'destinationOrganization'){
+      if(percentage.destinationOrganization){
+        const total = Object.values(percentage.destinationOrganization)
+          .filter(a => typeof a === 'number')
+          .reduce((a, b) => a + b, 0) + value - oldValue;
+
+          setTotais({
+            ...totais,
+            destinationOrganization:total,
+          });
+      }
+    }else if(section === 'investmentPortfolio'){
+      if(percentage.investmentPortfolio){
+        const total = Object.values(percentage.investmentPortfolio)
+          .filter(a => typeof a === 'number')
+          .reduce((a, b) => a + b, 0) + value - oldValue;
+
+          setTotais({
+            ...totais,
+            destinationOrganization:total,
+          });
+      }
+    }else if(section === 'variableIncomePortfolio'){
+      if(percentage.variableIncomePortfolio){
+        const total = Object.values(percentage.variableIncomePortfolio)
+          .filter(a => typeof a === 'number')
+          .reduce((a, b) => a + b, 0) + value - oldValue;
+
+          setTotais({
+            ...totais,
+            destinationOrganization:total,
+          });
+      }
+    }
+
+  }, [percentage, totais]);
+
+
 
   return (
     <>
@@ -126,7 +227,7 @@ const Conta: React.FC = () => {
         <div>
           <div>
             <input
-              value={percentage.destinationOrganization.retirement}
+              value={percentage.destinationOrganization?.retirement || ''}
               placeholder="10,00%"
               onChange={(e) => {
                 var value: number = parseFloat(e.target.value);
@@ -136,13 +237,12 @@ const Conta: React.FC = () => {
                   value = 0;
                 }
 
-                var oldValue = percentage.destinationOrganization.retirement;
-                var total = Object.values(percentage.destinationOrganization)
-                  .filter(a => typeof a === 'number')
-                  .reduce((a, b) => a + b, 0) + value - oldValue;
-                setTotais({
-                  ...totais,
-                  destinationOrganization:total,
+                var oldValue = percentage.destinationOrganization?.retirement || 0;
+
+                handleTotal({
+                  section: sections.destinationOrganization,
+                  value,
+                  oldValue
                 });
 
                 setPercentage({
@@ -158,7 +258,7 @@ const Conta: React.FC = () => {
             <label htmlFor="">Aposentadoria (Património)</label></div>
           <div>
             <input
-             value={percentage.destinationOrganization.emergency}
+             value={percentage.destinationOrganization?.emergency || ''}
              placeholder="10,00%"
              onChange={(e) => {
                var value: number = parseFloat(e.target.value);
@@ -168,13 +268,11 @@ const Conta: React.FC = () => {
                  value = 0;
                }
 
-              const oldValue = percentage.destinationOrganization.emergency;
-              const total = Object.values(percentage.destinationOrganization)
-                  .filter(a => typeof a === 'number')
-                  .reduce((a, b) => a + b, 0) + value - oldValue;
-              setTotais({
-                ...totais,
-                destinationOrganization:total,
+              const oldValue = percentage.destinationOrganization?.emergency || 0;
+              handleTotal({
+                section: sections.destinationOrganization,
+                value,
+                oldValue
               });
 
               setPercentage({
@@ -197,7 +295,7 @@ const Conta: React.FC = () => {
             <label htmlFor="">Reserva de Emergência</label></div>
           <div>
             <input
-             value={percentage.destinationOrganization.education}
+             value={percentage.destinationOrganization?.education || ''}
              placeholder="10,00%"
              onChange={(e) => {
                var value: number = parseFloat(e.target.value);
@@ -207,14 +305,11 @@ const Conta: React.FC = () => {
                  value = 0;
                }
 
-               var oldValue = percentage.destinationOrganization.education;
-               const total = Object.values(percentage.destinationOrganization)
-                  .filter(a => typeof a === 'number')
-                  .reduce((a, b) => a + b, 0) + value - oldValue;
-
-              setTotais({
-                ...totais,
-                destinationOrganization:total,
+               var oldValue = percentage.destinationOrganization?.education || 0;
+               handleTotal({
+                section: sections.destinationOrganization,
+                value,
+                oldValue
               });
 
               setPercentage({
@@ -238,7 +333,7 @@ const Conta: React.FC = () => {
             <label htmlFor="">Educação</label></div>
           <div>
             <input
-             value={percentage.destinationOrganization.shortTermGoals}
+             value={percentage.destinationOrganization?.shortTermGoals || ''}
              placeholder="10,00%"
              onChange={(e) => {
                var value: number = parseFloat(e.target.value);
@@ -248,14 +343,11 @@ const Conta: React.FC = () => {
                  value = 0;
                }
 
-               var oldValue = percentage.destinationOrganization.shortTermGoals;
-               const total = Object.values(percentage.destinationOrganization)
-                  .filter(a => typeof a === 'number')
-                  .reduce((a, b) => a + b, 0) + value - oldValue;
-
-              setTotais({
-                ...totais,
-                destinationOrganization:total,
+               var oldValue = percentage.destinationOrganization?.shortTermGoals || 0;
+               handleTotal({
+                section: sections.destinationOrganization,
+                value,
+                oldValue
               });
 
               setPercentage({
@@ -279,7 +371,7 @@ const Conta: React.FC = () => {
             <label htmlFor="">Metas de Curto Prazo</label></div>
           <div>
             <input
-             value={percentage.destinationOrganization.mediumTermGoals}
+             value={percentage.destinationOrganization?.mediumTermGoals || ''}
              placeholder="10,00%"
              onChange={(e) => {
                var value: number = parseFloat(e.target.value);
@@ -289,14 +381,11 @@ const Conta: React.FC = () => {
                  value = 0;
                }
 
-               var oldValue = percentage.destinationOrganization.mediumTermGoals;
-               const total = Object.values(percentage.destinationOrganization)
-                  .filter(a => typeof a === 'number')
-                  .reduce((a, b) => a + b, 0) + value - oldValue;
-
-              setTotais({
-                ...totais,
-                destinationOrganization:total,
+               var oldValue = percentage.destinationOrganization?.mediumTermGoals || 0;
+               handleTotal({
+                section: sections.destinationOrganization,
+                value,
+                oldValue
               });
 
 
@@ -321,7 +410,7 @@ const Conta: React.FC = () => {
             <label htmlFor="">Metas de Médio Prazo</label></div>
           <div>
             <input
-             value={percentage.destinationOrganization.longTermGoals}
+             value={percentage.destinationOrganization?.longTermGoals || ''}
              placeholder="10,00%"
              onChange={(e) => {
                var value: number = parseFloat(e.target.value);
@@ -331,15 +420,12 @@ const Conta: React.FC = () => {
                  value = 0;
                }
 
-               var oldValue = percentage.destinationOrganization.longTermGoals;
-               const total = Object.values(percentage.destinationOrganization)
-                  .filter(a => typeof a === 'number')
-                  .reduce((a, b) => a + b, 0) + value - oldValue;
-
-                  setTotais({
-                    ...totais,
-                    destinationOrganization:total,
-                  });
+               var oldValue = percentage.destinationOrganization?.longTermGoals || 0;
+               handleTotal({
+                section: sections.destinationOrganization,
+                value,
+                oldValue
+              });
 
 
               setPercentage({
@@ -363,7 +449,7 @@ const Conta: React.FC = () => {
             <label htmlFor="">Metas de Longo Prazo</label></div>
           <div>
             <input
-             value={percentage.destinationOrganization.needs}
+             value={percentage.destinationOrganization?.needs || ''}
              placeholder="10,00%"
              onChange={(e) => {
                var value: number = parseFloat(e.target.value);
@@ -373,15 +459,12 @@ const Conta: React.FC = () => {
                  value = 0;
                }
 
-               var oldValue = percentage.destinationOrganization.needs;
-               const total = Object.values(percentage.destinationOrganization)
-                  .filter(a => typeof a === 'number')
-                  .reduce((a, b) => a + b, 0) + value - oldValue;
-
-                  setTotais({
-                    ...totais,
-                    destinationOrganization:total,
-                  });
+               var oldValue = percentage.destinationOrganization?.needs || 0;
+               handleTotal({
+                section: sections.destinationOrganization,
+                value,
+                oldValue
+              });
 
 
               setPercentage({
@@ -405,7 +488,7 @@ const Conta: React.FC = () => {
             <label htmlFor="">Gastos e necessidades</label></div>
           <div>
             <input
-             value={percentage.destinationOrganization.recreation}
+             value={percentage.destinationOrganization?.recreation || ''}
              placeholder="10,00%"
              onChange={(e) => {
                var value: number = parseFloat(e.target.value);
@@ -415,15 +498,12 @@ const Conta: React.FC = () => {
                  value = 0;
                }
 
-               var oldValue = percentage.destinationOrganization.recreation;
-               const total = Object.values(percentage.destinationOrganization)
-                  .filter(a => typeof a === 'number')
-                  .reduce((a, b) => a + b, 0) + value - oldValue;
-
-                  setTotais({
-                    ...totais,
-                    destinationOrganization:total,
-                  });
+               var oldValue = percentage.destinationOrganization?.recreation || 0;
+               handleTotal({
+                section: sections.destinationOrganization,
+                value,
+                oldValue
+              });
 
 
               setPercentage({
@@ -449,7 +529,7 @@ const Conta: React.FC = () => {
         <div>
           <header>Decido pelas opções acima porque:</header>
           <textarea
-          value={percentage.destinationOrganization.decision}
+          value={percentage.destinationOrganization?.decision || ''}
           placeholder="Estou definindo esse valores por..."
           onChange={(e) => {
             setPercentage({
