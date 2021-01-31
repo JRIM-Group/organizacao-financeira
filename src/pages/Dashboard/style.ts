@@ -35,7 +35,7 @@ export const Title = styled.h1`
   max-width: 450px;
   line-height: 56px;
 
-  margin-top: 80px;
+  margin: 40px 0;
 `;
 
 export const Contas = styled.div`
@@ -103,4 +103,23 @@ export const Link = styled(LinkReact)<LinkProps>`
     margin-left: auto;
     color: #cbcbd6;
   }
+`;
+
+export const Main = styled.main`
+  max-width: 1200px;
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+
+`;
+
+export const Aside = styled.aside`
+  background: #fff;
+
+  border-radius: 8px;
+  width: 100%;
+  max-width: 600px;
+  padding: 24px;
+
 `;

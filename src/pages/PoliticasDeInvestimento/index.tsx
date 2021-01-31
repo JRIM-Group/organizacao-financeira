@@ -10,29 +10,6 @@ const sections = {
   "variableIncomePortfolio": "variableIncomePortfolio",
 };
 
-const destination = {
-  "retirement": "retirement",
-  "emergency": "emergency",
-  "education": "education",
-  "shortTermGoals": "shortTermGoals",
-  "mediumTermGoals": "mediumTermGoals",
-  "longTermGoals": "longTermGoals",
-  "needs": "needs",
-  "fixedIncome": "fixedIncome",
-  "variableIncome": "variableIncome",
-  "scrip": "scrip",
-  "fiis": "fiis",
-  "stocks": "stocks",
-  "reit": "reit",
-  "ownBusiness": "ownBusiness",
-  "immobilized": "immobilized",
-  "cryptocurrencies": "cryptocurrencies",
-  "metals": "metals",
-  "rebalancingReserve": "rebalancingReserve",
-  "detour": "detour",
-};
-
-
 interface IDestinationOrganization {
   retirement?: number;
   emergency?: number;
@@ -66,7 +43,7 @@ interface IVariableIncomePortfolio {
   decision: string;
 }
 
-interface IPercentagePercentage {
+export interface IPercentagePercentage {
   destinationOrganization: IDestinationOrganization;
   investmentPortfolio: IInvestmentPortfolio;
   variableIncomePortfolio: IVariableIncomePortfolio;

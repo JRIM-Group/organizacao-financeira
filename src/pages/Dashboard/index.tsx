@@ -1,35 +1,52 @@
 import React, { useEffect, useState } from 'react';
+import ReactApexChart from 'react-apexcharts';
 import { FiChevronRight } from 'react-icons/fi';
 import { Link as LinkRouterDOM } from 'react-router-dom';
 import Logo from '../../components/Logo';
-import api from '../../services/api';
-import { Contas, Header, Link, Title } from './style';
+import { IPercentagePercentage } from '../PoliticasDeInvestimento';
+import { Aside, Header, Main, Title } from './style';
 
-const typeContaAllowed = {
-  "10": "CORRENTE",
-  "13": "POUPANÇA",
-  "25": "MEI",
-  "17": "UNIVERSITÁRIO",
+const destination = {
+  "retirement": "Aposentadoria",
+  "emergency": "Reserva de Emergência",
+  "education": "Educação",
+  "shortTermGoals": "Metas Curto Prazo",
+  "mediumTermGoals": "Metas Médio Prazo",
+  "longTermGoals": "Metas Logo Prazo",
+  "needs": "Necessidades",
+  "recreation": "Lazer"
 };
 
-interface Conta {
-  idConta: string;
-  saldo: string;
-  flagAtivo: string;
-  tipoConta:  keyof typeof typeContaAllowed;
-  dataCriacao: string;
+interface ISeries{
+  name: string,
+  data: any
 }
 
 const Dashboard: React.FC = () => {
-  const [contas, setContas] = useState<Conta[]>([]);
+
+  const [incomeDivision, setIncomeDivision] = useState<null | number[]>(null);
 
   useEffect(() => {
-    api
-    .get<Conta[]>(`/conta`)
-    .then(response => {
-      setContas(response.data);
-    });
-  }, []);
+    const storagedPlanning = localStorage.getItem(
+      '@MyPlanning:percentage',
+    );
+
+    if (storagedPlanning) {
+      const p: IPercentagePercentage =  JSON.parse(storagedPlanning);
+      const names = Object.values(destination);
+
+      if(p.destinationOrganization){
+        const data = Object.values(p.destinationOrganization)
+          .filter(a => typeof a === 'number');
+
+          console.log(data);
+
+        setIncomeDivision(data)
+      }
+    }
+
+  },[]);
+
 
   return (
     <>
@@ -43,25 +60,62 @@ const Dashboard: React.FC = () => {
 
       <Title>Meu Dashboard</Title>
 
-      <Contas>
-        {contas.map((conta) => (
-          <Link
-            status={conta.flagAtivo === "1"}
-            key={conta.idConta}
-            to={`/conta/${conta.idConta}`}
-          >
-            <span>
-              {conta.idConta}
-            </span>
-            <div>
-              <strong>{typeContaAllowed[conta.tipoConta]}</strong>
-              { conta.flagAtivo === "1" ? <p>Ativada</p> : <p>Desativada</p>}
-            </div>
-            <p>{Number(conta.saldo).toLocaleString("pt-BR", { minimumFractionDigits: 2 , style: 'currency', currency: 'BRL' })}</p>
-            <FiChevronRight size={20} />
-          </Link>
-        ))}
-      </Contas>
+      <Main>
+          {incomeDivision && (
+            <Aside>
+              <ReactApexChart
+                type="donut"
+                options={{
+                  chart: {
+                    type: 'donut',
+                    width: '100%',
+                  },
+                  title: {
+                    text: 'Divisão de Renda',
+                    style: {
+                      fontSize:  '24px',
+                      fontFamily: 'Roboto, Helvetica, Arial',
+                    },
+                  },
+                  legend: {
+                    fontSize: '16px',
+                    fontFamily: 'Roboto, Helvetica, Arial',
+                  },
+                  labels: Object.values(destination),
+
+                  responsive: [{
+                    breakpoint: 650,
+                    options: {
+                      chart: {
+                        width: '100%',
+
+                      },
+                      legend: {
+                        show: false,
+                        fontSize: '4px'
+                        // position: 'bottom',
+                        // horizontalAlign: 'left',
+                        // width: 200,
+                        // height: 300,
+                        // itemMargin: {
+                        //   vertical: 4,
+                        // },
+                      }
+                    }
+                  },{
+                    options:{
+                      breakpoint: 550,
+                      dataLabels: {
+                          fontSize: '50px',
+                      }
+                    }
+                  }],
+                }}
+                series={incomeDivision}
+              />
+            </Aside>
+          )}
+      </Main>
     </>
   );
 };
