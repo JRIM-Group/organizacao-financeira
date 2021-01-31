@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
+import { Link as LinkRouterDOM } from 'react-router-dom';
 import Logo from '../../components/Logo';
 import api from '../../services/api';
-import { Contas, Link, Title } from './style';
+import { Contas, Header, Link, Title } from './style';
 
 const typeContaAllowed = {
   "10": "CORRENTE",
@@ -32,8 +33,15 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
-      <Logo/>
-      <Title>Meu <br/> Dashboard</Title>
+      <Header>
+        <Logo />
+        <LinkRouterDOM to="/politicas-de-investimento">
+          Políticas de Investimento
+          <FiChevronRight size={16} />
+        </LinkRouterDOM>
+      </Header>
+
+      <Title>Meu Dashboard</Title>
 
       <Contas>
         {contas.map((conta) => (

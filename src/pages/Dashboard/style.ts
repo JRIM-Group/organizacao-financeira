@@ -6,6 +6,29 @@ interface LinkProps{
   status?: string | boolean;
 }
 
+export const Header = styled.header`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #3d3d4d;
+    transition: 0.3s;
+
+    &:hover {
+      color: #666;
+      transform: translateX(10px);
+    }
+
+    svg {
+      margin-right: 4px;
+    }
+  }
+`;
+
 export const Title = styled.h1`
   font-size: 48px;
   color: #3a3a3a;
