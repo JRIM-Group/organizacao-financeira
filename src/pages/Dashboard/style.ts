@@ -154,6 +154,17 @@ export const Section = styled.section`
     border-bottom: 2px solid #3a3a3a;
 
     /* background: #F6E645; */
+
+    input {
+      background-color: #d6d6d6;
+      border: none;
+      margin: 0 4px;
+      max-width: 150px;
+      font-size: 20px;
+      font-family: 'Roboto';
+      line-height: 30px;
+      padding: 0 8px;
+    }
   }
 
   > div {

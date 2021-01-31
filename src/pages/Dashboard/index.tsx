@@ -25,7 +25,25 @@ interface Item{
 const Dashboard: React.FC = () => {
 
   const [incomeDivision, setIncomeDivision] = useState<null | Item[]>(null);
-  const [income, setIncome] = useState<string>('1000');
+  const [income, setIncome] = useState<string>(() => {
+    const storagedIncome = localStorage.getItem(
+      '@MyPlanning:income',
+    );
+
+    if(storagedIncome){
+      return storagedIncome;
+    }
+
+    return '';
+
+  });
+
+  useEffect(() => {
+    localStorage.setItem(
+      '@MyPlanning:income',
+      income,
+    );
+  }, [income]);
 
   useEffect(() => {
     const storagedPlanning = localStorage.getItem(
@@ -72,7 +90,9 @@ const Dashboard: React.FC = () => {
               <p>
                 Eu Recebi esse mês:
               </p>
-              <p>R$ 1000,00</p>
+              <p>R$
+                <input type="text" value={income} onChange={(e) => setIncome(e.target.value)}/>
+              </p>
             </header>
             <div>
               <header>Minha grana vai ficar balanceada assim: </header>
