@@ -137,6 +137,18 @@ export const Main = styled.main`
   display: flex;
   justify-content: space-between;
 
+  @media (max-width: 760px){
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    aside {
+      margin: 0;
+      margin-top: 25px;
+
+    }
+  }
+
 `;
 
 export const Aside = styled.aside`
