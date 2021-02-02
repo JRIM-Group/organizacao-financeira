@@ -105,6 +105,7 @@ const Conta: React.FC = () => {
             if(typeof a === 'number'){
               return a;
             }
+            return undefined;
           });
 
         const total = arrayPercentage.reduce((a, b) => {
@@ -116,6 +117,7 @@ const Conta: React.FC = () => {
           }else if(b){
             return b;
           }
+          return undefined;
         }, 0);
         console.log(total);
 

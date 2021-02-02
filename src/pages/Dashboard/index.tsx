@@ -34,7 +34,7 @@ const Dashboard: React.FC = () => {
       return storagedIncome;
     }
 
-    return '';
+    return '400.00';
 
   });
 
