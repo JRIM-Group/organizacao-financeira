@@ -38,6 +38,31 @@ export const Title = styled.h1`
   margin: 40px 0;
 `;
 
+export const Aviso = styled.div`
+  background: #fff;
+
+  border-radius: 8px;
+  padding: 8px;
+  margin: 40px 0;
+
+
+  font-size: 32px;
+  color: #3a3a3a;
+  width: 100%;
+  line-height: 42px;
+  text-align: center;
+
+  a {
+    color: #008ffb;
+    transition: all 0.3s;
+
+    &:hover{
+      color: #0063ae;
+    }
+
+  }
+`;
+
 export const Contas = styled.div`
   margin-top: 80px;
   max-width: 700px;

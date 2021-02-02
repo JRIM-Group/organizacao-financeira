@@ -4,7 +4,7 @@ import { FiChevronRight } from 'react-icons/fi';
 import { Link as LinkRouterDOM } from 'react-router-dom';
 import Logo from '../../components/Logo';
 import { IPercentagePercentage } from '../PoliticasDeInvestimento';
-import { Aside, Header, Main, Title, Section } from './style';
+import { Aside, Header, Main, Title, Section, Aviso } from './style';
 
 const destination = {
   "retirement": "Aposentadoria",
@@ -83,7 +83,7 @@ const Dashboard: React.FC = () => {
 
       <Title>Meu Dashboard</Title>
 
-      {incomeDivision && (
+      {incomeDivision?.length ? (
         <Main>
           <Section>
             <header>
@@ -97,7 +97,7 @@ const Dashboard: React.FC = () => {
             <div>
               <header>Minha grana vai ficar balanceada assim: </header>
               <div className="division">
-                {incomeDivision.map(p => {
+                {incomeDivision.map((p, i) => {
                     var  input = parseFloat(income);
 
                     if (input < 0){
@@ -107,7 +107,7 @@ const Dashboard: React.FC = () => {
                     }
                     const value = (input * p.data / 100).toFixed(2);
 
-                    return <div><p>{`R$ ${value} para ${p.name}`}</p></div>
+                    return <div key={i}><p>{`R$ ${value} para ${p.name}`}</p></div>
                 })}
               </div>
             </div>
@@ -168,6 +168,11 @@ const Dashboard: React.FC = () => {
             />
           </Aside>
         </Main>
+      ): (
+        <Aviso>
+          Parece que você anda não organizou sua Política de Investimentos <br/>
+          <LinkRouterDOM to="/politicas-de-investimento"> FAZER AGORA</LinkRouterDOM>
+        </Aviso>
       )}
     </>
   );
