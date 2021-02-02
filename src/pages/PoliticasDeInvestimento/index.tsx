@@ -520,6 +520,7 @@ const Conta: React.FC = () => {
           ></textarea>
         </div>
       </Section>
+{/*
 
       <Section>
         <header>
@@ -541,6 +542,8 @@ const Conta: React.FC = () => {
           <textarea>Teste</textarea>
         </div>
       </Section>
+
+
 
       <Section>
         <header>
@@ -604,8 +607,9 @@ const Conta: React.FC = () => {
               )}
             </li>
           </ul>
-        </ContaInfo>*/
-      }
+        </ContaInfo>
+
+*/}
 
       {/* <Form onSubmit={handleFilter}>
         <h2>Extrato</h2>
